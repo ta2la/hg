@@ -6,6 +6,7 @@
 *.a
 *.0
 *.so
+*.autosave
 Makefile*
 hg_display/debug/
 hg_display/release/

@@ -18,4 +18,3 @@ CONFIG(debug, debug|release) {
 else {
      DEFINES += NDEBUG
 }
-
