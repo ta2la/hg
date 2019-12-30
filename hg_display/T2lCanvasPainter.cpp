@@ -88,6 +88,12 @@ void CanvasPainter::draw_(ComponentLine* l)
 {
     Point2FCol& points = l->points().points();
 
+    cout << "line: ";
+    for ( int i = 0; i < points.count(); i++ ) {
+        cout << "[" << points.get(i).x() << "," << points.get(i).y() << "]";
+    }
+    cout << "\n";
+
     painter_->setBrush(Qt::NoBrush);
     QColor color ( l->color().r(), l->color().g(), l->color().b(), l->alpha());
     painter_->setPen( QPen(color, l->width()*ppm_, Qt::SolidLine, Qt::FlatCap));

@@ -38,18 +38,27 @@ public:
     void add(Cmd* cmd, bool once);
     Cmd* activeCommand();
     void setTentaiveImplementation(TentativeImplementation* ti) { tentative_ = ti; }
+    Point2F lastPoint() const { return lastPoint_; }
 //=============================================================================
     void enterPointStright ( const Point2F& pt, Display& view );
     void enterPoint        ( const Point2F& pt, Display& view );
     void enterReset        ( Display& view );
     void enterMove         ( const Point2F& pt, Display& view );
     void enterTentative    ( const Point2F& pt, Display& view );
+
+    double  grid() { return grid_; }
+    Point2F gridCalc( const Point2F& pt);
+    void    gridSet(double grid) { grid_ = grid; }
+
 //<OVERRIDES>
     virtual bool offerText ( const QString& text );
 //protected:
 //<DATA>
     CmdStack                 cmdStack_;
+    Point2F                  lastPoint_;
     static CmdQueue*         queue_;
+
+    double                   grid_;
 
     TentativeImplementation* tentative_;
 };

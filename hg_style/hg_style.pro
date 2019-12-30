@@ -7,7 +7,6 @@ CONFIG += c++11
 INCLUDEPATH += ./ \
                ../../hg/hg_utility/include \
                ../../base/base/include \
-               ../../base/base_ex/include \
                ../../base/geogebra
 
 SOURCES     += ./*.cpp

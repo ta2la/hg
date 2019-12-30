@@ -35,16 +35,16 @@ public:
     virtual ~GObjectPool() {}
 //<METHODS>
     static GObjectPool& instance();
-    RefColSelection&          selected();
-    void                      addRefCol(RefCol* refCol);
+    RefColSelection&    selected();
+    void                addRefCol(RefCol* refCol);
 //=============================================================================
 //<OVERRIDES>
 //protected:
 //<DATA>
     QMap<QString, GObject*> registryUuid_;
-    QList<RefCol*>                registryRefCol_;
+    QList<RefCol*>          registryRefCol_;
     List<GObject>           registryChanged_;
-    long                          updateLock_;
+    long                    updateLock_;
 //<INTERNALS>
     void handleLockDecrement_();
 //<FRIENDS>

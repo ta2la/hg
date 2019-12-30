@@ -34,9 +34,10 @@ public:
 //<NEIGHBOURS>
     CmdQueue* queue();
 //<METHODS>
-    const   QString&  name()     const     { return name_; }
-    virtual QString   hint(void) const { return "no hint"; }
-    virtual QString   dialog()   const { return ""; }
+    const   QString&  name()      const     { return name_; }
+    virtual QString   hint(void)  const { return "no hint"; }
+    virtual QString   dialog()    const { return ""; }
+    virtual QString   dialogTml() const { return ""; }
     
     virtual void enterPoint( const Point2F& /*pt*/, Display& /*view*/ ) {}
     virtual void enterMove ( const Point2F& /*pt*/, Display& /*view*/ );

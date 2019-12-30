@@ -19,6 +19,7 @@
 #include "T2lSfeatLineS.h"
 #include "T2lRawSline.h"
 #include "T2lRawLine.h"
+#include "T2lStyleChange.h"
 
 using namespace T2l;
 
@@ -45,6 +46,10 @@ void EntityLinear::drawBasic_(Canvas* canvas)
             RawLine e ( sfLine->color(), sfLine->width(), sfLine->offset(),
                                sfLine->lstyle(), points().closed(), styleChange() );
             for ( int i = 0; i < points_.count(); i++) e.pline().points().add(points_.get(i));
+
+            if ( styleChange_ ) {
+                styleChange_->execute(&e, canvas);
+            }
 
             if ( canvas->draw(&e) == false ) e.decompose(canvas);
         }

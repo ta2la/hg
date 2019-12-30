@@ -25,8 +25,13 @@
 #include "T2lComponentCircle.h"
 #include "T2lComponentArea.h"
 #include "T2lComponentText.h"
+#include "T2lStyleChange.h"
+#include "T2lCanvas.h"
+
+#include <iostream>
 
 using namespace T2l;
+using namespace std;
 
 //=============================================================================
 RawSymbol::RawSymbol( const T2l::Point2F position, T2l::Symbol& symbol,
@@ -43,6 +48,8 @@ RawSymbol::RawSymbol( const T2l::Point2F position, T2l::Symbol& symbol,
 //=============================================================================
 void RawSymbol::decompose(T2l::CanvasI* canvas)
 {
+    Canvas* canvasa = dynamic_cast<Canvas*>(canvas); //TODO
+
     for ( int i = 0; i < symbol_->items().count(); i++ ) {
         Sitem* symboli = symbol_->items().get(i);
 
@@ -50,11 +57,14 @@ void RawSymbol::decompose(T2l::CanvasI* canvas)
         {
         case  Sitem::SITEM_LINE: {
             SitemLine* linei = dynamic_cast<SitemLine*>(symboli);
-            ComponentLine line( symboli->color(), canvas->mapSymbolicToReal((linei->width())));
+            ComponentLine line( symboli->color(), linei->width() );
             Point2Col<double>& points = linei->points().points();
             for ( int i = 0; i < points.count(); i++ ) {
-                line.points().points().add(point_(points.get(i), canvas));
+                Point2F pointi = points.get(i);
+                Point2F pointt = point_(pointi, canvasa);
+                line.points().points().add(pointt);
             }
+            if ( styleChange() != nullptr ) styleChange()->execute(&line, canvasa);
             canvas->draw(&line);
             }
             break;
@@ -63,8 +73,9 @@ void RawSymbol::decompose(T2l::CanvasI* canvas)
             ComponentArea area(symboli->color());
             Point2FCol& points = areai->points().points().points();
             for (int i = 0; i < points.count(); i++) {
-                points.add( point_(points.get(i), canvas) );
+                area.area().points().points().add( point_(points.get(i), canvas) );
             }
+            if ( styleChange() != NULL ) styleChange()->execute(&area, canvasa);
             canvas->draw(&area);
             }
             break;
@@ -73,6 +84,7 @@ void RawSymbol::decompose(T2l::CanvasI* canvas)
             ComponentCircle circle( symboli->color(), point_(circlei->center(), canvas),
                                   canvas->mapSymbolicToReal(circlei->radius()),
                                   circlei->fill(), canvas->mapSymbolicToReal((circlei->width())) );
+            if ( styleChange() != NULL ) styleChange()->execute(&circle, canvasa);
             canvas->draw(&circle);
             }
         break;
@@ -81,6 +93,7 @@ void RawSymbol::decompose(T2l::CanvasI* canvas)
             ComponentText text( texti->text(), point_(texti->position(), canvas),
                             canvas->mapSymbolicToReal(texti->height()), symboli->color(),
                             texti->alignH(), texti->alignV(), false, AngleXcc(0));
+            if ( styleChange() != NULL ) styleChange()->execute(&text, canvasa);
             canvas->draw(&text);
             break;
 }   }   }   }
@@ -90,8 +103,12 @@ Point2F RawSymbol::point_(const Point2F& point, CanvasI* canvas)
 {
     Vector2F v(point.x(), point.y());
     if ( fabs(angle_.get()) > 10e-6) v.rotateCc(angle_);
-    Point2F delta = canvas->mapSymbolicToReal(Point2F(v.x(), v.y()));
-    return Point2F( position().x()*canvas->scaleX()+delta.x(),
-                    position().y()*canvas->scaleY()+delta.y() );
+    //Point2F delta = canvas->mapSymbolicToReal(Point2F(v.x(), v.y()));
+    Point2F delta = point;
+    cout << "delta: " << delta.x() << "-" << delta.y() << "\n";
+    double positionX = position().x()*canvas->scaleX();
+    double positionY = position().y()*canvas->scaleY();
+    Point2F result( positionX+delta.x(), positionY+delta.y() );
+    return result;
 }
 

@@ -17,6 +17,7 @@
 #include "T2lCanvas.h"
 #include "T2lSfeatSymbol.h"
 #include "T2lRawSymbol.h"
+#include "T2lStyleChange.h"
 
 using namespace T2l;
 
@@ -46,6 +47,10 @@ void EntityPoint::draw(Canvas* canvas)
 
         RawSymbol e( origin(), *sfSymbol->symbol(), Color(Color::BLACK),
                                   angle(), angleZero(), styleChange() );
+        /*if ( styleChange_ ) {
+            styleChange_->execute(&e, canvas);
+        }*/
+
         if ( canvas->draw(&e) == false ) e.decompose(canvas);
     }
 }

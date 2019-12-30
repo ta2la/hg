@@ -48,7 +48,7 @@ public:
 //<METHODS>
     virtual ECategory category() = 0;
 
-    const Color& color() const { return color_; }
+    virtual const Color& color() const { return color_; }
     void colorSet(const Color& color) { color_ = color; }
 
     std::vector<T2l::Area2>& clips() { return clips_; }

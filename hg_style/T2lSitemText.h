@@ -20,6 +20,7 @@
 #include "T2lPoint2.h"
 #include <QString>
 #include "T2lSymbolDefs.h"
+#include "T2lIntervalF.h"
 
 namespace T2l
 {
@@ -43,6 +44,7 @@ public:
 //=============================================================================
 //<OVERRIDES>
     virtual EType type(void) const { return SITEM_TEXT; }
+    virtual Box2F bound(void) { return Box2F( IntervalF(-1, 1), IntervalF(-1, 1) ); }
 protected:
 //<DATA>
     QString  text_;

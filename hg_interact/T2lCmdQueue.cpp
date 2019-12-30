@@ -31,6 +31,7 @@ CmdQueue* CmdQueue::queue_ = new CmdQueue();
 //=============================================================================
 CmdQueue::CmdQueue() :
     cmdStack_(*this),
+    grid_(0.0),
     tentative_(new TentativeImplementation)
 {
     add(new Cmd_void(), false);
@@ -57,6 +58,7 @@ bool CmdQueue::offerText ( const QString& text )
 void CmdQueue::enterPointStright( const Point2F& pt, Display& view )
 {
     activeCommand()->enterPoint(pt, view);
+    lastPoint_ = pt;
 }
 
 //=============================================================================
@@ -66,6 +68,9 @@ void CmdQueue::enterPoint( const Point2F& pt, Display& view )
 
     if (tentative_->entered_ == true) {
         PT = tentative_->consume();
+    }
+    else if (grid_ != 0.0) {
+        PT = gridCalc(PT);
     }
 
     stringstream cmd;
@@ -117,6 +122,20 @@ void CmdQueue::add(Cmd* cmd, bool once)
 
     cmdStack_.add(cmd);
     cmd->once_ = once;
+}
+
+//=============================================================================
+Point2F CmdQueue::gridCalc( const Point2F& pt)
+{
+    if ( grid_ == 0.0) return pt;
+
+    double x = pt.x()/grid();
+    double y = pt.y()/grid();
+
+    x = round(x)*grid();
+    y = round(y)*grid();
+
+    return Point2F(x, y);
 }
 
 //=============================================================================

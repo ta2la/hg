@@ -18,6 +18,8 @@
 #include "T2lDisplay.h"
 #include "T2lEntityLine.h"
 #include <iostream>
+#include "T2lUpdateLock.h"
+#include "T2lScene.h"
 
 using namespace T2l;
 using namespace std;//CHECKEND
@@ -45,6 +47,8 @@ Point2F TentativeImplementation::consume()
 //=============================================================================
 void TentativeImplementation::enterTentative_( const Point2F& pt, Display& view )
 {
+    UpdateLock l;
+
     if (entered_) consume();
     entered_ = true;
     position_ = pt;
@@ -53,20 +57,24 @@ void TentativeImplementation::enterTentative_( const Point2F& pt, Display& view 
     if ( pack == NULL ) { assert(0); return; }
     if ( pack->scene() == NULL ) return;
 
+    int SIZE = 4;
+
     //<STEP> Dynamic drawing
     EntityLine* line = new EntityLine( Color(255, 0, 255) );
-    line->points().points().add( Point2F(pt.x()-20, pt.y()) );
-    line->points().points().add( Point2F(pt.x()+20, pt.y()) );
+    line->points().points().add( Point2F(pt.x()-SIZE, pt.y()) );
+    line->points().points().add( Point2F(pt.x()+SIZE, pt.y()) );
     entities_.add(line);
 
     line = new EntityLine( Color(255, 0, 255) );
-    line->points().points().add( Point2F(pt.x(), pt.y()-20) );
-    line->points().points().add( Point2F(pt.x(), pt.y()+20) );
+    line->points().points().add( Point2F(pt.x(), pt.y()-SIZE) );
+    line->points().points().add( Point2F(pt.x(), pt.y()+SIZE) );
     entities_.add(line);
 
     for (int i = 0; i < entities_.count(); i++) {
         pack->add(entities_.get(i));
     }
+
+    view.entityPack()->scene()->dirtySet();
 }
 
 //=============================================================================

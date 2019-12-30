@@ -17,7 +17,6 @@
 #include "T2lDisplayDynamic.h"
 #include "T2lDisplayBmp.h"
 #include "T2lEntityPack.h"
-//#include "T2lTimeObject.h"
 
 #include <QPainter>
 
@@ -81,8 +80,6 @@ void Widget::resizeEvent(QResizeEvent* event)
 //=============================================================================
 void Widget::paintEvent( QPaintEvent* )
 {
-    //TimeObject to;
-
     static int id = 0;
     id++;
     if (id %100 == 0) return;

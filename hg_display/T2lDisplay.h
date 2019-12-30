@@ -46,7 +46,7 @@ public:
     Display(const Point2F& origin, double scale);
     virtual ~Display();
 //<NEIGHBOURS>
-    EntityPack* entityPack() { return entityPack_; }
+    T2l::EntityPack* entityPack() { return entityPack_; }
 //<DATA>
     Point2F origin() const { return origin_; }
     virtual void originSet(const Point2F& origin);

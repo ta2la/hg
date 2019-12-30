@@ -14,6 +14,7 @@
 // limitations under the License.
 //=============================================================================
 #include "T2lWidgetInteract.h"
+#include "T2lWidgetInteractCol.h"
 #include "T2lCmdQueue.h"
 #include "T2lGObject.h"
 #include "T2lVector2.h"
@@ -44,7 +45,14 @@ WidgetInteract::WidgetInteract(const Point2F& origin, double scale ) :
 //=============================================================================
 WidgetInteract::~WidgetInteract()
 {
-    fabs(0);
+    bool contained = false;
+    for( int i = 0; i < WidgetInteractCol::instance().count(); i++) {
+        if ( WidgetInteractCol::instance().get(i) != this ) continue;
+        contained = true;
+        break;
+    }
+    if ( contained == false ) return;
+    WidgetInteractCol::instance().remove(this);
 }
 
 //=============================================================================

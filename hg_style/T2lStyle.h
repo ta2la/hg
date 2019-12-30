@@ -40,7 +40,7 @@ public:
     static Style* createLineStyle ( const Color& color, double width = 0.25, const char* id = "");
     static Style* createTextStyle ( const Color& color, double height,       const char* id = "");
 //<NEIGHBOURS>
-    SfeatCol& sfeats() {return sfeats_; }
+    SfeatCol& sfeats() { return sfeats_; }
     const SfeatCol& sfeats() const {return sfeats_; }
 //<METHODS>
     const char* id() const { return id_.c_str(); }
@@ -52,8 +52,13 @@ protected:
     SfeatCol    sfeats_;
 };
 
-class StyleCol : public ItemCol<Style>
+class StyleItem : public Item
 {
+public:
+    StyleItem(Style* style) : style_(style) {}
+    Style* style() { return style_; }
+private:
+    Style* style_;
 };
 
 } // namespace T2l
