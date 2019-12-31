@@ -17,6 +17,7 @@
 #include "T2lSfeatArea.h"
 #include "T2lComponentArea.h"
 #include "T2lCanvas.h"
+#include "T2lStyleChange.h"
 
 using namespace T2l;
 
@@ -44,6 +45,8 @@ void EntityArea::draw(Canvas* canvas)
         for ( int i = 0; i < points().count(); i++) {
             componentArea.area().points().points().add(canvas->mapRealToPaper(points().get(i)));
         }
+
+        if ( styleChange() != nullptr ) styleChange()->execute(&componentArea, canvas);
 
         canvas->draw(&componentArea);
     }
