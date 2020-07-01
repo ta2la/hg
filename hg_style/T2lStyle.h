@@ -38,7 +38,7 @@ public:
 
     static Style* createPointStyle( const Color& color, ESymbol symbol, double size, const char* id = "");
     static Style* createLineStyle ( const Color& color, double width = 0.25, const char* id = "");
-    static Style* createTextStyle ( const Color& color, double height,       const char* id = "");
+    static Style* createTextStyle ( const Color& color, double height,       const char* id = "", bool bold = false);
 //<NEIGHBOURS>
     SfeatCol& sfeats() { return sfeats_; }
     const SfeatCol& sfeats() const {return sfeats_; }

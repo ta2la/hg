@@ -73,10 +73,10 @@ Style* Style::createLineStyle( const Color& color, double width, const char* id)
 }
 
 //=============================================================================
-Style* Style::createTextStyle( const Color& color, double height, const char* id)
+Style* Style::createTextStyle( const Color& color, double height, const char* id, bool bold)
 {
     Style* style = new Style(id);
-    style->sfeats().add( new SfeatText(color, height));
+    style->sfeats().add( new SfeatText(color, height, bold));
     return style;
 }
 

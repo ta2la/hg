@@ -26,11 +26,13 @@ class SfeatText : public Sfeat {
 //=============================================================================
 public:
 //<CONSTRUCTION>
-    SfeatText( const Color& color, double height);
+    SfeatText( const Color& color, double height, bool bold = false);
     virtual ~SfeatText(void) {;}
 //<METHODS>
     double height()   { return height_; }
     bool   bold()     { return bold_; }
+
+    void boldSet(bool bold = true) { bold_ = bold; }
 //=============================================================================
 //<OVERRIDES>
     virtual SfeatText* getAsText()      { return this; }

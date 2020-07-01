@@ -18,10 +18,10 @@
 using namespace T2l;
 
 //=============================================================================
-SfeatText::SfeatText( const Color& color, double height) :
+SfeatText::SfeatText( const Color& color, double height, bool bold) :
     Sfeat(color),
     height_(height),
-    bold_(false)
+    bold_(bold)
 {
 }
 
