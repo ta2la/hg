@@ -92,7 +92,7 @@ bool Ref::identifiedByPoint( const Canvas& canvas, const Point2F& pt )
 
         EntityPoint* eSymbol = dynamic_cast<EntityPoint*>(entity);
         if (eSymbol != NULL) {
-            IdentifyPoint selector(canvas, eSymbol->origin());
+            IdentifyPoint selector(canvas, eSymbol->origin(&canvas));
 
             if ( selector.byPoint(pt) ) return true;
         }

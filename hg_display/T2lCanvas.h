@@ -39,8 +39,8 @@ public:
     Color color() const { return color_; }
     void colorSet( const Color& color ) { color_ = color; }
 
-    Vector2F overOffset() { return overOffset_; }
-    void overOffsetSet(const Vector2F& offset) { overOffset_ = offset; }
+    //Vector2F overOffset() { return overOffset_; }
+    //void overOffsetSet(const Vector2F& offset) { overOffset_ = offset; }
 //=============================================================================
 //<OVERRIDES>
     virtual bool draw(Component* /*c*/) { return false; }
@@ -63,7 +63,7 @@ public:
     double     scaleS_;
     Color      color_;
 
-    Vector2F   overOffset_;
+    //Vector2F   overOffset_;
 };
 
 } // namespace T2l

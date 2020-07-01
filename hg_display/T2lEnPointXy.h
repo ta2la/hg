@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2015 Petr Talla. [petr.talla@gmail.com]
+// Copyright (C) 2020 Petr Talla. [petr.talla@gmail.com]
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,46 +15,25 @@
 //=============================================================================
 #pragma once
 
-#include "T2lItem.h"
+#include "T2lEnPoint.h"
 #include "T2lPoint2.h"
-#include "T2lPoint2Col.h"
-
-#include <QString>
 
 namespace T2l
 {
-class CmdQueue;
-class Display;
 
 //=============================================================================
-class Cmd : public Item {
+class EnPointXy : public EnPoint{
 //=============================================================================
 public:
 //<CONSTRUCTION>
-    Cmd(const QString& name = "NULL");
-    virtual ~Cmd();
-//<NEIGHBOURS>
-    CmdQueue* queue();
+    EnPointXy(const Point2F& xy);
 //<METHODS>
-    const   QString&  name()      const     { return name_; }
-    virtual QString   hint(void)  const { return "no hint"; }
-    virtual QString   dialog()    const { return ""; }
-    virtual QString   dialogTml() const { return ""; }
-    
-    virtual void enterPoint( const Point2F& /*pt*/, Display& /*view*/ ) {}
-    virtual void enterMove ( const Point2F& /*pt*/, Display& /*view*/ );
-    virtual void enterReset( Display& /*view*/ ) {}
-    virtual void enterText( const QString& /*text*/) {}
+    virtual Point2F xy(const Canvas* canvas) { return xy_; }
+    virtual EnPoint* clone() { return new EnPointXy(xy_); }
 //=============================================================================
-//<OVERRIDES>
-//protected:
-    QString    name_;
-    bool       once_;
-    Point2FCol cmdpts_;
+protected:
 //<DATA>
-//<INTERNALS>
-//<FRIENDS>
-    friend class Queue;
+    Point2F xy_;
 };
 
 } // namespace T2l

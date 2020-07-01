@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2015 Petr Talla. [petr.talla@gmail.com]
+// Copyright (C) 2020 Petr Talla. [petr.talla@gmail.com]
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -15,46 +15,31 @@
 //=============================================================================
 #pragma once
 
-#include "T2lItem.h"
-#include "T2lPoint2.h"
-#include "T2lPoint2Col.h"
-
-#include <QString>
+#include "T2lEntity.h"
+#include "T2lColor.h"
 
 namespace T2l
 {
-class CmdQueue;
-class Display;
 
 //=============================================================================
-class Cmd : public Item {
+class EntityEnLinear : public Entity {
 //=============================================================================
 public:
 //<CONSTRUCTION>
-    Cmd(const QString& name = "NULL");
-    virtual ~Cmd();
-//<NEIGHBOURS>
-    CmdQueue* queue();
+    EntityEnLinear(const Color& color, const Color& colorLine, int transp);
+    virtual ~EntityEnLinear(void) {}
 //<METHODS>
-    const   QString&  name()      const     { return name_; }
-    virtual QString   hint(void)  const { return "no hint"; }
-    virtual QString   dialog()    const { return ""; }
-    virtual QString   dialogTml() const { return ""; }
-    
-    virtual void enterPoint( const Point2F& /*pt*/, Display& /*view*/ ) {}
-    virtual void enterMove ( const Point2F& /*pt*/, Display& /*view*/ );
-    virtual void enterReset( Display& /*view*/ ) {}
-    virtual void enterText( const QString& /*text*/) {}
+    void pointAdd( const Point2F& pt, const Point2F& offset);
 //=============================================================================
 //<OVERRIDES>
-//protected:
-    QString    name_;
-    bool       once_;
-    Point2FCol cmdpts_;
-//<DATA>
-//<INTERNALS>
-//<FRIENDS>
-    friend class Queue;
+    virtual void draw(Canvas* canvas);
+
+    Color color_;
+    Color colorLine_;
+    int   transp_;
+
+    Point2FCol points_;
+    Point2FCol ofsets_;
 };
 
 } // namespace T2l

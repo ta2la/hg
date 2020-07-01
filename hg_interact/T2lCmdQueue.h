@@ -15,7 +15,7 @@
 //=============================================================================
 #pragma once
 
-#include "T2lWidgetInteract.h"
+//#include "T2lWidgetInteract.h"
 #include "T2lCmdStack.h"
 #include "T2lQueue.h"
 
@@ -61,6 +61,8 @@ public:
     double                   grid_;
 
     TentativeImplementation* tentative_;
+
+    Point2F                  originalPoint_;
 };
 
 } // namespace T2l

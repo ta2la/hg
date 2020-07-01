@@ -18,6 +18,7 @@
 #include "T2lSfeatSymbol.h"
 #include "T2lRawSymbol.h"
 #include "T2lStyleChange.h"
+#include "T2lEnPointXy.h"
 
 using namespace T2l;
 
@@ -25,11 +26,22 @@ using namespace T2l;
 EntityPoint::EntityPoint( const Point2F& origin, Style& style, bool styleOwner,
                     EAngleZero angleZero, AngleXcc angle, StyleChange* styleChange ) :
     EntityStyled( &style, styleOwner, styleChange ),
-    origin_(origin),
+    origin_(new EnPointXy(origin)),
     angleZero_(angleZero),
     angle_(angle)
 {
     bound_.inflateTo(origin);
+}
+
+//=============================================================================
+EntityPoint::EntityPoint( EnPoint* origin, Style& style, bool styleOwner,
+                    EAngleZero angleZero, AngleXcc angle, StyleChange* styleChange ) :
+    EntityStyled( &style, styleOwner, styleChange ),
+    origin_(origin->clone()),
+    angleZero_(angleZero),
+    angle_(angle)
+{
+    //bound_.inflateTo(origin);
 }
 
 //=============================================================================
@@ -45,11 +57,8 @@ void EntityPoint::draw(Canvas* canvas)
         if (sfSymbol == NULL) continue;
         if ( sfSymbol->isScaleIn(scale) == false ) continue;
 
-        RawSymbol e( origin(), *sfSymbol->symbol(), Color(Color::BLACK),
+        RawSymbol e( origin(canvas), *sfSymbol->symbol(), Color(Color::BLACK),
                                   angle(), angleZero(), styleChange() );
-        /*if ( styleChange_ ) {
-            styleChange_->execute(&e, canvas);
-        }*/
 
         if ( canvas->draw(&e) == false ) e.decompose(canvas);
     }

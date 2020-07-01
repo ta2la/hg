@@ -38,6 +38,7 @@ CanvasPainter::CanvasPainter( QPainter& painter, const Point2F& origin, const Si
 {
     if ( xorArg == false ) return;
     painter_->setCompositionMode(QPainter::CompositionMode_Xor);
+    painter_->setClipping(true);
 }
 
 //=============================================================================
@@ -52,8 +53,27 @@ QPointF CanvasPainter::mapPaperToPixels(const Point2F& p) const
 //=============================================================================
 bool CanvasPainter::draw(Component* c)
 {
-    /*static int refresh = 0;
-    cout << "REFRESH: " << refresh++ << endl;*/
+    if (c->clips().size() > 0) {
+        Area2& area = c->clips().at(0);
+        Box2F box0 = area.points().points().bound();
+        Box2F box;
+        QPointF pt0 = mapPaperToPixels(box0.getPoint(0));
+        box.inflateTo(Point2F(pt0.x(), pt0.y()));
+
+        QPointF pt1 = mapPaperToPixels(box0.getPoint(2));
+        box.inflateTo(Point2F(pt1.x(), pt1.y()));
+
+        Point2F o0   = box.getPoint(0);
+        Point2F o1   = box.getPoint(1);
+        Point2F o2   = box.getPoint(2);
+        Point2F orig = box.getPoint(0);
+
+        painter_->setClipRect(orig.x(), orig.y(), box.x().getLength(), box.y().getLength(), Qt::ReplaceClip);
+    }
+    else {
+        painter_->setClipRect(0,0,100,100,Qt::NoClip);
+    }
+
 
     switch ( c->category() )
     {
@@ -66,19 +86,25 @@ bool CanvasPainter::draw(Component* c)
     }
 
     if (c->clips().size() > 0) {
-        for ( int i = 0; i < c->clips().size(); i++ ) {
-            ComponentLine lineClip(Color::MAGENTA);
-            Area2& area = c->clips().at(i);
-            Point2FCol& pts = area.points().points();
+        Area2& area = c->clips().at(0);
+        Box2F box0 = area.points().points().bound();
+        Box2F box;
+        Point2F pt0 = box0.getPoint(0);
+        box.inflateTo(Point2F(pt0.x(), pt0.y()));
 
-            for (int i = 0; i < pts.count(); i++) {
-                Point2F pti = pts.get(i);
-                lineClip.points().points().add(pti);
-            }
+        Point2F pt1 = box0.getPoint(2);
+        box.inflateTo(Point2F(pt1.x(), pt1.y()));
 
-            draw_(&lineClip);
+        ComponentLine lineClip(Color::MAGENTA, 0.001);
+
+        for (int i = 0; i < 5; i++) {
+            Point2F pti = box.getPoint(i);
+            lineClip.points().points().add(pti);
         }
+
+        draw_(&lineClip);
     }
+
 
     return true;
 }
@@ -88,11 +114,11 @@ void CanvasPainter::draw_(ComponentLine* l)
 {
     Point2FCol& points = l->points().points();
 
-    cout << "line: ";
+    /*cout << "line: ";
     for ( int i = 0; i < points.count(); i++ ) {
         cout << "[" << points.get(i).x() << "," << points.get(i).y() << "]";
     }
-    cout << "\n";
+    cout << "\n";*/
 
     painter_->setBrush(Qt::NoBrush);
     QColor color ( l->color().r(), l->color().g(), l->color().b(), l->alpha());
@@ -178,8 +204,8 @@ void CanvasPainter::draw_(ComponentText* t)
     QColor color ( t->color().r(), t->color().g(), t->color().b());
     QPointF p = mapPaperToPixels(t->position());
 
-    cout << t->text().toStdString() << ": " << p.x() << "," << p.y()
-         << " premap: " << t->position().x() << "," << t->position().y() << endl;
+    /*cout << t->text().toStdString() << ": " << p.x() << "," << p.y()
+         << " premap: " << t->position().x() << "," << t->position().y() << endl;*/
 
     Qt::AlignmentFlag alignVertQt = Qt::AlignTop;
     switch ( t->positionV() )
@@ -212,7 +238,8 @@ void CanvasPainter::draw_(ComponentText* t)
 
     QFont font("courier");
     font.setPointSizeF(height);
-    font.setBold(t->bold());
+    //font.setBold(t->bold());
+    if (t->bold()) font.setWeight(87);
     painter_->setFont(font);
 
     double textWidth = QFontMetrics(font).width(t->text());
@@ -239,17 +266,17 @@ void CanvasPainter::draw_(ComponentPixmap* p)
         Point2F p1 = p->imageRect().point(1);
         Point2F p3 = p->imageRect().point(3);
 
-        cout << "image premap 0: ["  << p0.x() << "," << p0.y() << "] "
+        /*cout << "image premap 0: ["  << p0.x() << "," << p0.y() << "] "
                           << "1: ["  << p1.x() << "," << p1.y() << "] "
-                          << "3: ["  << p3.x() << "," << p3.y() << "]"  << endl;
+                          << "3: ["  << p3.x() << "," << p3.y() << "]"  << endl;*/
 
         QPointF ptQt0 = mapPaperToPixels(p0);
         QPointF ptQt1 = mapPaperToPixels(p1);
         QPointF ptQt3 = mapPaperToPixels(p3);
 
-        cout << "image 0: ["  << ptQt0.x() << "," << ptQt0.y() << "] "
+        /*cout << "image 0: ["  << ptQt0.x() << "," << ptQt0.y() << "] "
                    << "1: ["  << ptQt1.x() << "," << ptQt1.y() << "] "
-                   << "3: ["  << ptQt3.x() << "," << ptQt3.y() << "]"  << endl;
+                   << "3: ["  << ptQt3.x() << "," << ptQt3.y() << "]"  << endl;*/
 
         Point2F pt0(ptQt0.x(), ptQt0.y());
         Point2F pt1(ptQt1.x(), ptQt1.y());
@@ -282,8 +309,8 @@ void CanvasPainter::draw_(ComponentPixmap* p)
         end = mapPaperToPixels(p->imageRect().point(2));
         QPointF pp3 = mapPaperToPixels(p->imageRect().point(3));
 
-        cout << "begi: ["  << beg.x() << "," << beg.y() << "] "
-             << "endi: ["  << end.x() << "," << end.y() << "] " << endl;
+        /*cout << "begi: ["  << beg.x() << "," << beg.y() << "] "
+             << "endi: ["  << end.x() << "," << end.y() << "] " << endl;*/
 
         double X = beg.x();
         double Y = end.y();
@@ -309,8 +336,8 @@ void CanvasPainter::draw_(ComponentPixmap* p)
         QPointF beg = mapPaperToPixels(Point2F(box.x().beg(), box.y().beg()));
         QPointF end = mapPaperToPixels(Point2F(box.x().end(), box.y().end()));
 
-        cout << "beg: ["  << beg.x() << "," << beg.y() << "] "
-             << "end: ["  << end.x() << "," << end.y() << "] " << endl;
+        /*cout << "beg: ["  << beg.x() << "," << beg.y() << "] "
+             << "end: ["  << end.x() << "," << end.y() << "] " << endl;*/
 
         double X = beg.x()<end.x() ? beg.x() : beg.x();
         double Y = beg.y()<end.y() ? end.y() : end.y();

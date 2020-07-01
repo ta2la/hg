@@ -32,7 +32,8 @@ public:
     virtual ~TentativeImplementation() {}
 //<METHODS>
     virtual void enterTentative( const Point2F& pt, Display& view );
-    Point2F consume();
+    virtual void afterConsumation() {};
+    Point2F      consume();
 //=============================================================================
 //<OVERRIDES>
 //protected:

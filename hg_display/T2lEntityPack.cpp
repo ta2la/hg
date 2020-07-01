@@ -100,6 +100,13 @@ void EntityPack::draw(T2l::Canvas& canvas)
 }
 
 //=============================================================================
+Display* EntityPack::display()
+{
+    if (displays_.count() < 1) return nullptr;
+    return displays_.get(0);
+}
+
+//=============================================================================
 void EntityPack::dynamicRefresh(void)
 {
     for (int i = 0; i < displays_.count(); i++) {

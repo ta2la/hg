@@ -176,6 +176,7 @@ Point2F Widget::mapPixelInMetric_(const Point2F pt)
 //=============================================================================
 void Widget::refresh_()
 {
+    //cout << "refresh_->update" << endl;
     update();
 }
 

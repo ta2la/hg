@@ -1,5 +1,5 @@
 //
-// Copyright (C) 2015 Petr Talla. [petr.talla@gmail.com]
+// Copyright (C) 2020 Petr Talla. [petr.talla@gmail.com]
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -13,37 +13,27 @@
 // See the License for the specific language governing permissions and
 // limitations under the License.
 //=============================================================================
-#include "T2lCanvas.h"
-#include "T2lEntityColI.h"
-#include "T2lSize2.h"
-#include "T2lIntervalF.h"
-#include <assert.h>
+#include "T2lEnPointMmRel.h"
 
 using namespace T2l;
 
 //=============================================================================
-Canvas::Canvas( double scale, double scaleS ) :
-    scaleX_(scale),
-    scaleY_(scale),
-    scaleS_(scaleS),
-    color_(Color::WHITE)
-    //overOffset_(Vector2F(0, 0))
+EnPointMmRel::EnPointMmRel(const Point2F& xy, const Vector2F& offset) :
+    EnPointXy(xy),
+    offset_(offset)
 {
 }
 
 //=============================================================================
-Box2F Canvas::mapRealToPaper(const Box2F& box) const
+Point2F EnPointMmRel::xy(const Canvas* canvas)
 {
-    assert ( (scaleX() > 0.0) && (scaleY() > 0.0) );
-    return Box2F( IntervalF(box.x().beg()*scaleX(), box.x().end()*scaleX()),
-                        IntervalF(box.y().beg()*scaleY(), box.y().end()*scaleY()) );
-}
+    Point2F ptx( offset_.x(),  offset_.y() );
+    ptx = canvas->mapPaperToReal(ptx);
 
-//=============================================================================
-void Canvas::originSet(const Point2F& origin)
-{
-    bound_ = Box2F( IntervalF(origin.x(), origin.x()+bound().x().getLength()),
-                    IntervalF(origin.y(), origin.y()+bound().y().getLength()) );
+    double x = xy_.x() + ptx.x()/1000.0;
+    double y = xy_.y() + ptx.y()/1000.0;
+
+    return Point2F(x, y);
 }
 
 //=============================================================================

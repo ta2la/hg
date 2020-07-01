@@ -61,14 +61,15 @@ void EntityText::draw(Canvas* canvas)
     double scale = 1.0/canvas->scaleX();
     if ( canvas->scaleX() > canvas->scaleY() ) scale = 1.0/canvas->scaleY();
 
-
     if (style()) {
         for (int i = 0; i < style()->sfeats().count(); i++) {
             SfeatText* sfeatText = dynamic_cast<SfeatText*>(style()->sfeats().get2(i));
             if ( sfeatText == NULL ) continue;
             if ( sfeatText->isScaleIn(scale) == false ) continue;
 
-            draw_( canvas, position(), angle(), sfeatText->color(), sfeatText->height(),
+            EnPointMmRel pt(position(), Vector2F(offset_.x(), offset().y()));
+
+            draw_( canvas, pt.xy(canvas), angle(), sfeatText->color(), sfeatText->height(),
                    sfeatText->bold() );
         }
     }

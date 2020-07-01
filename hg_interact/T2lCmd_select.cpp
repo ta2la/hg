@@ -23,6 +23,7 @@
 #include "T2lGObject.h"
 #include "T2lEntityLine.h"
 #include "T2lEntityText.h"
+#include "T2lDisplay.h"
 
 using namespace T2l;
 

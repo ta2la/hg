@@ -41,6 +41,7 @@ public:
 //<NEIGHBOURS>
     Scene* scene() { return scene_; }
     void addDisplay(Display* display);
+    Display* display();
 //<ITEMS>
     void add(Entity* entity);
     void addDynamic(Entity* entity);

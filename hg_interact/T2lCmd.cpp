@@ -17,6 +17,7 @@
 #include "T2lCmd.h"
 #include "T2lCmdStack.h"
 #include "T2lCmdQueue.h"
+#include "T2lDisplay.h"
 
 #include <assert.h>
 

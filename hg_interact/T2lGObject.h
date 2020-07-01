@@ -66,6 +66,8 @@ public:
     friend class Cmd_object_movePoints;
     friend class Cmd_over_file_manipulate;
     friend class Cmd_actual_image_set;
+    friend class Cmd_draw_kohonen_matrix;
+    friend class Cmd_draw_color2d;
 };
 
 } // namespace T2l

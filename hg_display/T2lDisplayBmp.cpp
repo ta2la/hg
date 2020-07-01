@@ -47,7 +47,7 @@ DisplayBmp::~DisplayBmp()
 void DisplayBmp::bmpUpdate()
 {
     static int updateId_ = 0;
-    cout << "))))))))))))))))))))))))))))) BITMAP UPDATE .... " << updateId_++ << endl;
+    //cout << "))))))))))))))))))))))))))))) BITMAP UPDATE .... " << updateId_++ << endl;
 
     assert ( bmpDisplay_->entityPack() != NULL );
 

@@ -19,6 +19,7 @@
 #include "T2lEntityStyled.h"
 #include "T2lAngleXcc.h"
 #include <QString>
+#include "T2lEnPointMmRel.h"
 
 namespace T2l
 {
@@ -52,11 +53,15 @@ public:
 protected:
 //<DATA>
     QString     text_;
+
     Point2F     position_;
+    Point2F     offset_;
+    EnPoint*    origin_;
+
     EPositionH  alignH_;
     EPositionV  alignV_;
     AngleXcc    angle_;
-    Point2F     offset_;
+
 
 //<INTERNALS>
     void draw_(Canvas* canvas, const Point2F& position, const AngleXcc& angle,

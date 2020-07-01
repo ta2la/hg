@@ -38,7 +38,7 @@ public:
     GObject* object() { return object_; }
     const GObject* object() const { return object_; }
 //<METHODS>
-    void repaint();
+    virtual void repaint();
     bool identifiedByPoint( const Canvas& canvas, const Point2F& pt);
 //=============================================================================
 //<OVERRIDES>

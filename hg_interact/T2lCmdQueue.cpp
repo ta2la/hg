@@ -20,6 +20,9 @@
 #include "T2lCmd_void.h"
 #include "T2lTentativeImplementation.h"
 #include "TcCmdTransl.h"
+#include "T2lDisplay.h"
+#include "T2lEntityPack.h"
+#include "T2lScene.h"
 #include <iostream>
 #include <sstream>
 
@@ -64,6 +67,8 @@ void CmdQueue::enterPointStright( const Point2F& pt, Display& view )
 //=============================================================================
 void CmdQueue::enterPoint( const Point2F& pt, Display& view )
 {
+    originalPoint_ = pt;
+
     Point2F PT(pt);
 
     if (tentative_->entered_ == true) {
@@ -77,6 +82,8 @@ void CmdQueue::enterPoint( const Point2F& pt, Display& view )
     cmd << "xy \"" << PT.x() << "\" \"" << PT.y() << "\"";
 
     TcCmdTransl::xcall(cmd.str().c_str(), true);
+
+    tentative_->afterConsumation();
 }
 
 //=============================================================================
@@ -92,6 +99,12 @@ Cmd* CmdQueue::activeCommand()
 //=============================================================================
 void CmdQueue::enterReset( Display& view )
 {
+    if ( tentative_->entered_ == true ) {
+        tentative_->consume();
+        return;
+        view.entityPack()->scene()->dirtySet();
+    }
+
     activeCommand()->enterReset(view);
     TcCmdTransl::xcall("voidcmd", true);
 }

@@ -69,8 +69,8 @@ public:
     void refresh();
     virtual void updateDynamic() {;}
 
-    Vector2F overOffset() { return overOffset_; }
-    void overOffsetSet(const Vector2F& offset) { overOffset_ = offset; }
+    //Vector2F overOffset() { return overOffset_; }
+    //void overOffsetSet(const Vector2F& offset) { overOffset_ = offset; }
 //=============================================================================
 //<OVERRIDES>
 //protected:
@@ -92,7 +92,7 @@ public:
 
     std::string image_file_;
 
-    Vector2F overOffset_;
+    //Vector2F overOffset_;
     //IplImage*   image_;
 //<INTERNALS>
     void unlockRefresh();

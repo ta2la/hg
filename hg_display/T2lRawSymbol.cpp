@@ -61,8 +61,10 @@ void RawSymbol::decompose(T2l::CanvasI* canvas)
             Point2Col<double>& points = linei->points().points();
             for ( int i = 0; i < points.count(); i++ ) {
                 Point2F pointi = points.get(i);
-                Point2F pointt = point_(pointi, canvasa);
-                line.points().points().add(pointt);
+                //Point2F pointt = point_(pointi, canvasa);
+                Vector2F dir( pointi.x(), pointi.y() );
+                dir.rotateCc(angle_);
+                line.points().points().add(point_(Point2F(dir.x(), dir.y()), canvas));
             }
             if ( styleChange() != nullptr ) styleChange()->execute(&line, canvasa);
             canvas->draw(&line);
@@ -73,7 +75,9 @@ void RawSymbol::decompose(T2l::CanvasI* canvas)
             ComponentArea area(symboli->color());
             Point2FCol& points = areai->points().points().points();
             for (int i = 0; i < points.count(); i++) {
-                area.area().points().points().add( point_(points.get(i), canvas) );
+                Vector2F dir( points.get(i).x(), points.get(i).y() );
+                dir.rotateCc(angle_);
+                area.area().points().points().add( point_(Point2F(dir.x(), dir.y()), canvas) );
             }
             if ( styleChange() != NULL ) styleChange()->execute(&area, canvasa);
             canvas->draw(&area);
@@ -103,9 +107,9 @@ Point2F RawSymbol::point_(const Point2F& point, CanvasI* canvas)
 {
     Vector2F v(point.x(), point.y());
     if ( fabs(angle_.get()) > 10e-6) v.rotateCc(angle_);
-    //Point2F delta = canvas->mapSymbolicToReal(Point2F(v.x(), v.y()));
+
     Point2F delta = point;
-    cout << "delta: " << delta.x() << "-" << delta.y() << "\n";
+
     double positionX = position().x()*canvas->scaleX();
     double positionY = position().y()*canvas->scaleY();
     Point2F result( positionX+delta.x(), positionY+delta.y() );

@@ -20,6 +20,7 @@
 #include <iostream>
 #include "T2lUpdateLock.h"
 #include "T2lScene.h"
+#include "T2lSfeatSymbol.h"
 
 using namespace T2l;
 using namespace std;//CHECKEND
@@ -60,6 +61,14 @@ void TentativeImplementation::enterTentative_( const Point2F& pt, Display& view 
     int SIZE = 4;
 
     //<STEP> Dynamic drawing
+    /*static Style style* = nullptr;
+    if (style == nullptr) {
+        style = new Style();
+
+        Symbol* symbol = new Symbol();
+
+        SfeatSymbol sfeat = new SfeatSymbol();*/
+
     EntityLine* line = new EntityLine( Color(255, 0, 255) );
     line->points().points().add( Point2F(pt.x()-SIZE, pt.y()) );
     line->points().points().add( Point2F(pt.x()+SIZE, pt.y()) );
@@ -80,8 +89,6 @@ void TentativeImplementation::enterTentative_( const Point2F& pt, Display& view 
 //=============================================================================
 void TentativeImplementation::enterTentative( const Point2F& pt, Display& view )
 {
-    //cout << "TENTATIVE AT XY: " << pt.x() << " " << pt.y() << endl;
-
     enterTentative_( pt, view );
 }
 

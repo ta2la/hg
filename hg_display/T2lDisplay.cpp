@@ -31,8 +31,8 @@ Display::Display(const Point2F& origin, double scale) :
     scale_(scale, scale),
     ppm_(4000.0),
     refreshLock_(0),
-    refreshedLocked_(Fresh),
-    overOffset_(Vector2F(0, 0))
+    refreshedLocked_(Fresh)
+    //overOffset_(Vector2F(0, 0))
 {
     DisplayCol& vc = DisplayCol::instance();
     vc.add(this);
@@ -131,7 +131,7 @@ Canvas Display::getRefCanvas() const
     bound.inflateTo(Point2F(origin().x()+size().w(), origin().y()+size().h()));
     result.boundSet(bound);
 
-    result.overOffsetSet(overOffset_);
+    //result.overOffsetSet(overOffset_);
 
     return result;
 }
