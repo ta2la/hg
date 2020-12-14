@@ -69,7 +69,7 @@ void EntityPack::refresh(void)
 //=============================================================================
 void EntityPack::draw(T2l::Canvas& canvas)
 {
-    std::cout << "-----------------------------------------" << std::endl;
+    //std::cout << "-----------------------------------------" << std::endl;
 
     int BOUND = Entity::layerMax()+1;
 
