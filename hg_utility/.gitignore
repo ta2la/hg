@@ -1,0 +1,7 @@
+*
+!/src
+!/include
+!src/*.cpp
+!include/*.h
+!hg_utility.pro
+!.gitignore
