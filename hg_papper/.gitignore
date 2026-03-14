@@ -1,0 +1,5 @@
+*
+!*.cpp
+!*.h
+!hg_papper.pro
+!.gitignore
