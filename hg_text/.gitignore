@@ -1,0 +1,6 @@
+*
+!*.cpp
+!*.h
+!hg_text.pro
+!.gitignore
+
